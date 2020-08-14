@@ -5,17 +5,17 @@ import android.os.Environment
 import java.io.File
 
 class DownloadableFiles(
-    context: Context,
-    private val serverURL: String,
-    childDir: String, fileName: String,
-    private var downloadTitle: String, private val downloadDescription: String
+    private val fileServerURL: String,
+    subDirectory: String, fileName: String,
+    private var downloadTitle: String, private val downloadDescription: String,
+    context: Context
 ) {
     private val rootDir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString()
-    private var localURL: String = "$rootDir/$childDir/$fileName"
+    private var localURL: String = "$rootDir/$subDirectory/$fileName"
 
     fun download(context: Context, onComplete: () -> Unit) {
         DownloadUtil(context).enqueueDownload(
-            context, serverURL, localURL,
+            context, fileServerURL, localURL,
             downloadTitle, downloadDescription,
             onComplete
         )
