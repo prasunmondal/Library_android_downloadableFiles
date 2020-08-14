@@ -34,11 +34,11 @@ open class DownloadUtil(private val context: Context) {
         request.setDescription(downloadDescription)
         request.setDestinationUri(uri)
         if (onComplete != null)
-            showInstallOption(onComplete)
+            onCompletion(onComplete)
         downloadManager.enqueue(request)
     }
 
-    private fun showInstallOption(onComplete: () -> Unit?) {
+    private fun onCompletion(onComplete: () -> Unit?) {
         // on download complete...
         val onComplete = object : BroadcastReceiver() {
             override fun onReceive(context: Context, intent: Intent) {
