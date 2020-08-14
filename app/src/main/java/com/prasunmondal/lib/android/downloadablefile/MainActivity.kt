@@ -2,6 +2,7 @@ package com.prasunmondal.lib.android.downloadablefile
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 
 class MainActivity : AppCompatActivity() {
 
@@ -9,6 +10,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        Config.metadata.download(applicationContext)
+        Config.metadata.download(applicationContext, ::showToast)
+    }
+
+    fun showToast() {
+        Toast.makeText(applicationContext, "Download Complete!", Toast.LENGTH_SHORT).show()
     }
 }
