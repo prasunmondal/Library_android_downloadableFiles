@@ -41,8 +41,19 @@ class DownloadableFiles(
         )
     }
 
-    fun doesExist(): Boolean {
+    fun doesExist(context: Context): Boolean {
+        formLocalURLs(context, subDirectory, fileName)
         val file = File(this.localURL)
         return file.exists()
+    }
+
+    fun getServerURL(context: Context): String {
+        formLocalURLs(context, subDirectory, fileName)
+        return fileServerURL
+    }
+
+    fun getLocalURL(context: Context): String {
+        formLocalURLs(context, subDirectory, fileName)
+        return localURL
     }
 }
