@@ -6,25 +6,17 @@ import java.io.File
 
 class DownloadableFiles(
     private val fileServerURL: String,
-    private val subDirectory: String,
-    private val fileName: String,
+    subDirectory: String,
+    fileName: String,
     private var downloadTitle: String,
     private val downloadDescription: String,
-    private val onComplete: () -> Unit
+    private val onComplete: () -> Unit,
+    private val context: Context
 ) {
-    private var rootDir = ""
-    private var localURL = ""
+    private var rootDir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString()
+    private var localURL = "$rootDir/$subDirectory/$fileName"
 
-    private fun formLocalURLs(context: Context, subDirectory: String, fileName: String) {
-        if(localURL.isEmpty()) {
-            println("Setting Directories ----------------------")
-            rootDir = context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS).toString()
-            localURL = "$rootDir/$subDirectory/$fileName"
-        }
-    }
-
-    fun download(context: Context) {
-        formLocalURLs(context, subDirectory, fileName)
+    fun download() {
         DownloadUtil(context).enqueueDownload(
             context, fileServerURL, localURL,
             downloadTitle, downloadDescription,
@@ -32,8 +24,7 @@ class DownloadableFiles(
         )
     }
 
-    fun download(context: Context, onComplete: () -> Unit) {
-        formLocalURLs(context, subDirectory, fileName)
+    fun download(onComplete: () -> Unit) {
         DownloadUtil(context).enqueueDownload(
             context, fileServerURL, localURL,
             downloadTitle, downloadDescription,
@@ -41,19 +32,16 @@ class DownloadableFiles(
         )
     }
 
-    fun doesExist(context: Context): Boolean {
-        formLocalURLs(context, subDirectory, fileName)
+    fun doesExist(): Boolean {
         val file = File(this.localURL)
         return file.exists()
     }
 
-    fun getServerURL(context: Context): String {
-        formLocalURLs(context, subDirectory, fileName)
+    fun getServerURL(): String {
         return fileServerURL
     }
 
-    fun getLocalURL(context: Context): String {
-        formLocalURLs(context, subDirectory, fileName)
+    fun getLocalURL(): String {
         return localURL
     }
 }
